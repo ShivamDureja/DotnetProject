@@ -1,156 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using CustomerApi.Models;
+using Microsoft.AspNetCore.Cors;
+
+
 
 namespace CustomerApi.Controllers
 {
+    
+    [EnableCors("MyPolicy")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CustomersController : Controller
     {
-        private readonly CustomerDbContext _context;
 
-        public CustomersController(CustomerDbContext context)
-        {
-            _context = context;
-        }
+            private readonly CustomerDbContext _context;
+
+           public CustomersController(CustomerDbContext context)
+             {
+                _context = context;
+             }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        
+        public IEnumerable<Customer> GetCustomers()
         {
-            return View(await _context.Customers.ToListAsync());
+            return _context.Customers;
         }
-
-        // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // Get: Customer with Id
+        [HttpGet("{id}")]
+        
+        public IActionResult GetCustomer(int id)
         {
-            if (id == null)
+            if(id < 1)
+            {
+                return BadRequest();
+            }
+            var customer =  _context.Customers.FirstOrDefault(x => x.CustId == id);
+     //       Customer customer = _context.Customers.Find(id);
+            if(customer == null)
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustId == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
+            return Ok(customer);
         }
 
-        // GET: Customers/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //Post Customer with Id
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustId,Name,Address,Mobile,Email")] Customer customer)
+        
+        public IActionResult PostCustomer(Customer customer)
         {
-            if (ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            return View(customer);
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+            return Ok();
         }
-
-        // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpDelete("{id}")]
+        
+        public IActionResult DeleteCustomer(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers.FindAsync(id);
+            var customer =  _context.Customers.Find(id);
             if (customer == null)
-            {
                 return NotFound();
-            }
-            return View(customer);
-        }
-
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustId,Name,Address,Mobile,Email")] Customer customer)
-        {
-            if (id != customer.CustId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CustomerExists(customer.CustId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(customer);
-        }
-
-        // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustId == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.CustId == id);
+            _context.Customers.Remove(customer);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
+      
