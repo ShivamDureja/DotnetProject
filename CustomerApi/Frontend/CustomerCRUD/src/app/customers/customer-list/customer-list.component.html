@@ -1,0 +1,19 @@
+<table class="table table-sm table-hover" >
+  <tbody>
+    <tr *ngFor="let customer of custService.CustomerList | async">
+        <td>{{customer.CustId}}</td>
+        <td>{{customer.Name}}</td>
+        <td>{{customer.Address}}</td>
+        <td>{{customer.Mobile}}</td>
+        <td>{{customer.Email}}</td>
+        <td>
+          <a class="btn" (click)="showForEdit(customer)">
+            <i class="fa fa-pencil-square-o"></i>
+          </a>
+          <a class="btn text-danger" (click)="OnDelete(customer.CustId)">
+            <i class="fa fa-trash-o"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+</table>
