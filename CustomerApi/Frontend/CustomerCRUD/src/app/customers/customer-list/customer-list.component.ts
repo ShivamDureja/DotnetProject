@@ -14,22 +14,30 @@ import { CommonModule, NgFor } from '@angular/common';
 //  host : {ngSkipHydration: 'true'}
 })
 export class CustomerListComponent implements OnInit {
-  allCustomers: Observable<Customer[]>;
+  allCustomers: Customer[];
+  colNames: Array<string> = [];
 
-  constructor(public custService: CustomerService, private toastr: ToastrService){  }
+  constructor(public custService: CustomerService, private toastr: ToastrService){ 
+   
+   }
 
   ngOnInit(): void {
       this.loadAllCustomers();
   }
 
   loadAllCustomers(){
-    this.allCustomers = this.custService.getCustomerList();
-    console.log(this.custService.getCustomerList());
+    this.custService.getCustomerList()
+    .subscribe((data : any) => {
+      this.allCustomers = data
+      this.colNames = Object.keys(this.allCustomers[0])
+      console.log(JSON.stringify(this.allCustomers))
+    })
   }
   showForEdit(cust: Customer){
     this.custService.selectedCustomer = Object.assign({},cust);
   }
   OnDelete(id: number){
+    console.log("OnDelete Called!!!!!!!!!!!")
     if(confirm('Are you sure you want to delete this record ?') == true){
       this.custService.deleteCustomer(id)
       .subscribe(x => {

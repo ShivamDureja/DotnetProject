@@ -30,11 +30,11 @@ export class CustomerComponent implements OnInit {
       form.reset();
     }
     this.CustomerService.selectedCustomer = {
-      CustId : 0,
-      Name : '',
-      Address : '',
-      Mobile : '',
-      Email : ''
+      custId : 0,
+      name : '',
+      address : '',
+      mobile : '',
+      email : ''
     }
   }
 
@@ -43,8 +43,8 @@ export class CustomerComponent implements OnInit {
     if(form.value.CustId == null){
       form.value.CustId = 0;
     }
-    this.CustomerService.selectedCustomer.CustId = form.value.CustId;
-    if(this.CustomerService.selectedCustomer.CustId == 0){
+    this.CustomerService.selectedCustomer.custId = form.value.CustId;
+    if(this.CustomerService.selectedCustomer.custId == 0){
       this.CustomerService.addCustomer(form.value)
       .subscribe(data => {
         console.log(data);

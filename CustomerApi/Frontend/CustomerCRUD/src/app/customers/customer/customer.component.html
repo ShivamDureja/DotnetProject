@@ -1,26 +1,26 @@
 <form class="cust-form" #customerForm="ngForm" (ngSubmit)="OnSubmit(customerForm)">
-<input type="hidden" name="CustId" #CustId="ngModel" [(ngModel)] = "CustomerService.selectedCustomer.CustId">
+<input type="hidden" name="CustId" #CustId="ngModel" [(ngModel)] = "CustomerService.selectedCustomer.custId">
 
 <div class="form-group col-md-8">
-    <input class="form-control" name="Name" #Name = "ngModel" [(ngModel)]="CustomerService.selectedCustomer.Name"
+    <input class="form-control" name="Name" #Name = "ngModel" [(ngModel)]="CustomerService.selectedCustomer.name"
     placeholder="Name" required>
     <div class="validation-error" *ngIf="Name.invalid && Name.touched" style="color: red;">This Field is required!</div>
 </div>
 
 <div class="form-group col-md-8">
-    <input class="form-control" name="Address" #Address="ngModel" [(ngModel)]="CustomerService.selectedCustomer.Address"
+    <input class="form-control" name="Address" #Address="ngModel" [(ngModel)]="CustomerService.selectedCustomer.address"
     placeholder="Address" required>
     <div class="validation-error" *ngIf="Address.invalid && Address.touched" style="color: red;">This Field is required!</div>
 </div>
 
 <div class="form-group col-md-8">
-    <input class="form-control" name="Mobile" #Mobile="ngModel" [(ngModel)]="CustomerService.selectedCustomer.Mobile"
+    <input class="form-control" name="Mobile" #Mobile="ngModel" [(ngModel)]="CustomerService.selectedCustomer.mobile"
     placeholder="Mobile" required>
     <div class="validation-error" *ngIf="Mobile.invalid && Mobile.touched" style="color: red;">This Field is required!</div>
 </div>
 
 <div class="form-group col-md-8">
-    <input class="form-control" name="Email" #Email="ngModel" [(ngModel)]="CustomerService.selectedCustomer.Email"
+    <input class="form-control" name="Email" #Email="ngModel" [(ngModel)]="CustomerService.selectedCustomer.email"
     placeholder="Email" required>
     <div class="validation-error" *ngIf="Email.invalid && Email.touched" style="color: red;">This Field is required!</div>
 </div>

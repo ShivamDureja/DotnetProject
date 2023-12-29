@@ -1,7 +1,7 @@
 export class Customer {
-    CustId:number;
-    Name:string;
-    Address:string;
-    Mobile:string;
-    Email:string;
+    custId:number;
+    name:string;
+    address:string;
+    mobile:string;
+    email:string;
 }
